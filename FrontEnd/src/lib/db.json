@@ -1,0 +1,222 @@
+{
+  "tb_koperasi_kdkmp": [
+    {
+      "id_koperasi": "K001",
+      "id_desa": "D532",
+      "nama_koperasi": "Koperasi Merah Putih Subur Makmur",
+      "tingkat_modernisasi": 2,
+      "saldo_kas": 85000000,
+      "status": "Aktif"
+    }
+  ],
+  "tb_sppg": [
+    {
+      "id_sppg": "S001",
+      "id_koperasi": "K001",
+      "nama_sppg": "Dapur SPPG Subur Makmur",
+      "alamat": "Desa Subur Makmur Blok C, Sleman, DIY",
+      "kapasitas_harian": 500,
+      "status": "Aktif"
+    }
+  ],
+  "tb_anggota_warga": [
+    {
+      "id_anggota": "A001",
+      "id_koperasi": "K001",
+      "nama": "Pak Wayan Sudarma",
+      "no_whatsapp": "081234567890",
+      "kategori_usaha": "Kelompok Tani Padi",
+      "komoditas": "Beras",
+      "opt_in_consent": true,
+      "status": "Aktif"
+    },
+    {
+      "id_anggota": "A002",
+      "id_koperasi": "K001",
+      "nama": "Ibu Siti Rahma",
+      "no_whatsapp": "082388991122",
+      "kategori_usaha": "Produsen Tempe Desa",
+      "komoditas": "Tempe",
+      "opt_in_consent": true,
+      "status": "Aktif"
+    },
+    {
+      "id_anggota": "A003",
+      "id_koperasi": "K001",
+      "nama": "Pak Joko Widodo",
+      "no_whatsapp": "085277112233",
+      "kategori_usaha": "Peternak Ayam Lokal",
+      "komoditas": "Telur",
+      "opt_in_consent": false,
+      "status": "Aktif"
+    },
+    {
+      "id_anggota": "A004",
+      "id_koperasi": "K001",
+      "nama": "Bu Sri Mulyani",
+      "no_whatsapp": "087744556677",
+      "kategori_usaha": "Petani Cabai",
+      "komoditas": "Cabai",
+      "opt_in_consent": true,
+      "status": "Aktif"
+    }
+  ],
+  "tb_produksi_harian": [
+    {
+      "id_produksi": "P001",
+      "id_anggota": "A001",
+      "tanggal": "2026-07-09",
+      "jumlah_produksi": 120,
+      "jumlah_tersedia": 80,
+      "status": "Siap Salur"
+    },
+    {
+      "id_produksi": "P002",
+      "id_anggota": "A002",
+      "tanggal": "2026-07-09",
+      "jumlah_produksi": 60,
+      "jumlah_tersedia": 60,
+      "status": "Siap Salur"
+    },
+    {
+      "id_produksi": "P003",
+      "id_anggota": "A003",
+      "tanggal": "2026-07-09",
+      "jumlah_produksi": 45,
+      "jumlah_tersedia": 45,
+      "status": "Siap Salur"
+    },
+    {
+      "id_produksi": "P004",
+      "id_anggota": "A004",
+      "tanggal": "2026-07-09",
+      "jumlah_produksi": 30,
+      "jumlah_tersedia": 30,
+      "status": "Siap Salur"
+    }
+  ],
+  "tb_kebutuhan_sppg": [
+    {
+      "id_order": "O001",
+      "id_sppg": "S001",
+      "produk": "Tempe",
+      "jumlah": 100,
+      "harga_maksimal": 2000,
+      "status": "Menunggu Matching"
+    },
+    {
+      "id_order": "O002",
+      "id_sppg": "S001",
+      "produk": "Telur",
+      "jumlah": 80,
+      "harga_maksimal": 1500,
+      "status": "Menunggu Matching"
+    }
+  ],
+  "tb_ai_matching": [],
+  "tb_ai_blast_log": [],
+  "tb_approval_pengurus": [],
+  "tb_transaksi": [
+    {
+      "id_transaksi": "T001",
+      "id_order": "O000",
+      "id_supplier": "A001",
+      "nilai_transaksi": 596000,
+      "service_fee": 17880,
+      "nilai_supplier": 578120,
+      "status": "Selesai"
+    }
+  ],
+  "tb_ai_learning_log": [],
+  "tb_loans": [
+    {
+      "id": "L001",
+      "name": "Pak Wayan Sudarma",
+      "phone": "081234567890",
+      "amount": 12000000,
+      "type": "yarnen",
+      "tenure": 6,
+      "status": "Disetujui",
+      "date": "15 Mei 2026",
+      "purpose": "Pupuk Urea & Benih Padi IR64"
+    },
+    {
+      "id": "L002",
+      "name": "Ibu Siti Rahma",
+      "phone": "082388991122",
+      "amount": 8000000,
+      "type": "umkm",
+      "tenure": 12,
+      "status": "Disetujui",
+      "date": "02 Jun 2026",
+      "purpose": "Bahan Benang Tenun Alam"
+    },
+    {
+      "id": "L003",
+      "name": "Pak Joko Widodo",
+      "phone": "085277112233",
+      "amount": 5000000,
+      "type": "yarnen",
+      "tenure": 6,
+      "status": "Menunggu",
+      "date": "07 Jul 2026",
+      "purpose": "Sewa Traktor Pembajak Sawah"
+    }
+  ],
+  "tb_commodity_prices": [
+    {
+      "id": "padi",
+      "name": "Beras GKG Subur Makmur",
+      "price": 7300,
+      "unit": "kg",
+      "change": "-1.4%",
+      "trend": "down",
+      "info": "Serapan Dapur SPPG meningkat stabil minggu ini."
+    },
+    {
+      "id": "cabai",
+      "name": "Cabai Rawit Merah",
+      "price": 41200,
+      "unit": "kg",
+      "change": "-3.2%",
+      "trend": "down",
+      "info": "Pasokan panen melimpah dari petani binaan."
+    },
+    {
+      "id": "jagung",
+      "name": "Jagung Pipilan Kering",
+      "price": 5800,
+      "unit": "kg",
+      "change": "+0.8%",
+      "trend": "up",
+      "info": "Permintaan untuk bahan pakan ternak tinggi."
+    },
+    {
+      "id": "kopi",
+      "name": "Kopi Robusta Desa (Grade A)",
+      "price": 68500,
+      "unit": "kg",
+      "change": "+4.5%",
+      "trend": "up",
+      "info": "Volume ekspor hilirisasi meningkat tajam."
+    },
+    {
+      "id": "bawang",
+      "name": "Bawang Merah Brebes",
+      "price": 29000,
+      "unit": "kg",
+      "change": "0.0%",
+      "trend": "stable",
+      "info": "Pendistribusian di area lokal stabil."
+    },
+    {
+      "id": "tempe",
+      "name": "Tempe Koperasi Hilirisasi",
+      "price": 2000,
+      "unit": "potong",
+      "change": "+5.0%",
+      "trend": "up",
+      "info": "Pasokan utama Dapur SPPG Subur Makmur."
+    }
+  ]
+}
