@@ -17,6 +17,7 @@ import { prisma } from "./lib/db.ts";
 const pendingWithdrawals = new Map();
 const pendingRentengLoans = new Map();
 const pendingDepartures = new Map(); // FIX: track petani yang sedang pilih order mana yang mau dikirim
+let incomingMessageHandler = null;
 
 const askAI = async (prompt) => {
   // Langsung pakai Gemini API karena Kimi web token sering expired dan menyebabkan timeout sangat lama
@@ -141,7 +142,7 @@ export async function connectWhatsApp() {
   });
 
   // Handler pesan masuk
-  sock.ev.on("messages.upsert", async ({ messages, type }) => {
+  incomingMessageHandler = async ({ messages, type }) => {
     if (type !== "notify") return;
 
     for (const msg of messages) {
@@ -1230,11 +1231,67 @@ ATURAN FORM FORMATTING:
          await sock.sendMessage(from, { text: `Mohon maaf, terjadi kesalahan dalam membaca pesan Bapak/Ibu.` });
       }
     }
-  });
+  };
+  sock.ev.on("messages.upsert", incomingMessageHandler);
 
   return sock;
 }
 
 export function getSocket() {
   return sock;
+}
+
+let simulatedReplies = [];
+export function getSimulatedReplies() {
+  return simulatedReplies;
+}
+export function clearSimulatedReplies() {
+  simulatedReplies = [];
+}
+
+export async function simulateMessage(from, text) {
+  if (!incomingMessageHandler) {
+    // If not connected to live WhatsApp yet, create a minimal mock socket to run the simulation
+    console.log("Simulator: WhatsApp not initialized yet. Using standalone mock.");
+  }
+  
+  const originalSock = sock;
+  
+  // Mock socket for simulator
+  const mockSock = {
+    user: { id: "bot@s.whatsapp.net", name: "Kopdes Bot" },
+    sendMessage: async (jid, content) => {
+      console.log(`[SIMULATOR REPLY] Sending to ${jid}:`, content.text);
+      simulatedReplies.push({
+        from: jid.split('@')[0],
+        text: content.text,
+        timestamp: new Date().toISOString()
+      });
+      return { key: { id: "sim-reply-" + Math.random() } };
+    }
+  };
+  
+  sock = mockSock;
+  
+  try {
+    const fakeMsg = {
+      key: {
+        remoteJid: `${from}@s.whatsapp.net`,
+        fromMe: false,
+        id: "sim-msg-" + Date.now() + Math.floor(Math.random() * 1000)
+      },
+      message: {
+        conversation: text
+      }
+    };
+    
+    // Ensure handler runs even if Baileys isn't connected yet
+    if (!incomingMessageHandler) {
+      await connectWhatsApp();
+    }
+    
+    await incomingMessageHandler({ messages: [fakeMsg], type: "notify" });
+  } finally {
+    sock = originalSock;
+  }
 }
