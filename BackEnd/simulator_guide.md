@@ -8,3 +8,9 @@ Simulator bekerja dengan membypass library @whiskeysockets/baileys. Ia memotong 
 Simulator memisahkan tampilan interaksi menjadi dua kolom utama:
 - **Kiri (Petani)**: Untuk menguji pesan dari supplier komoditas.
 - **Kanan (Admin SPPG)**: Untuk menguji aksi pembeli/admin koperasi.
+
+## Daftar Endpoint Simulator
+API pendukung simulator:
+- GET /wa/simulator/users: Mengambil daftar anggota koperasi dari database.
+- POST /wa/simulate-receive: Mengirim pesan uji coba ke engine bot.
+- POST /wa/simulator/reset: Mengosongkan riwayat percakapan simulasi.
