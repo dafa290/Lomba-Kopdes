@@ -138,20 +138,9 @@ export default function Home() {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
       const isParamAdmin = params.get('admin') === 'true';
-      const token = localStorage.getItem('token');
-      const userStr = localStorage.getItem('user');
 
       if (isParamAdmin) {
         setIsAdminOpen(true);
-      } else if (token && userStr) {
-        try {
-          const user = JSON.parse(userStr);
-          if (user.role === 'pengurus' || user.role === 'admin') {
-            setIsAdminOpen(true);
-          }
-        } catch (e) {
-          console.error("Gagal membaca data sesi", e);
-        }
       }
     }
   }, []);
