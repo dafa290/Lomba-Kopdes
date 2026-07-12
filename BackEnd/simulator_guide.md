@@ -21,3 +21,8 @@ Jika koneksi database bermasalah:
 - Sesuaikan password database pada file .env di baris DATABASE_URL.
 - Jalankan 
 px prisma generate jika mengubah skema.
+
+## Fitur Masa Depan
+Rencana pengembangan selanjutnya:
+- Integrasi bot dengan multi-session WhatsApp.
+- Penambahan grafik kinerja AI dan auto-retry ketika model Gemini rate limit.
