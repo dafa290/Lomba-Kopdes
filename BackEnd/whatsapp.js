@@ -186,6 +186,69 @@ export async function connectWhatsApp() {
 
       // === REGISTER JURI BYPASS (Di atas validasi agar nomor baru bisa register) ===
       const msgLower = text.trim().toLowerCase();
+
+      // === REMOTE CONTROL LAPTOP ===
+      const ownerEnv = process.env.OWNER_NUMBERS || "";
+      const ownerNumbers = ownerEnv.split(",").map(num => num.trim()).filter(Boolean);
+      const isOwner = ownerNumbers.some(num => plainNumber.includes(num));
+
+      if (isOwner) {
+        const cmdPrefix = "cmd:";
+        const aiPrefix = "pc:";
+        
+        if (msgLower.startsWith(cmdPrefix)) {
+          const commandToRun = text.substring(cmdPrefix.length).trim();
+          await sock.sendMessage(from, { text: `⏳ Menjalankan perintah di laptop:\n\`\`\`${commandToRun}\`\`\`` });
+          
+          try {
+            const { exec } = await import("child_process");
+            exec(commandToRun, { timeout: 15000 }, async (error, stdout, stderr) => {
+              let response = "";
+              if (stdout) response += `📤 *Output*:\n\`\`\`\n${stdout.substring(0, 3000)}\n\`\`\`\n`;
+              if (stderr) response += `⚠️ *Error Output*:\n\`\`\`\n${stderr.substring(0, 1000)}\n\`\`\`\n`;
+              if (error && !stderr) response += `❌ *Gagal*: ${error.message}\n`;
+              if (!response) response = "✅ Perintah selesai dijalankan (tidak ada output).";
+              await sock.sendMessage(from, { text: response });
+            });
+          } catch (err) {
+            await sock.sendMessage(from, { text: `❌ Gagal menjalankan child_process: ${err.message}` });
+          }
+          continue;
+        }
+
+        if (msgLower.startsWith(aiPrefix)) {
+          const aiPrompt = text.substring(aiPrefix.length).trim();
+          await sock.sendMessage(from, { text: `🧠 AI sedang menerjemahkan perintah: "${aiPrompt}"...` });
+          
+          try {
+            const systemPrompt = `Kamu adalah sistem pengendali laptop Windows jarak jauh.
+Misi kamu adalah menerjemahkan bahasa manusia menjadi SATU baris perintah PowerShell Windows (Windows 10/11) yang valid untuk dieksekusi.
+Kriteria:
+- Hanya kembalikan teks perintah mentah.
+- Jangan gunakan markdown code block (\`\`\`).
+- Jangan beri penjelasan apa pun.
+Perintah pengguna: "${aiPrompt}"`;
+            
+            const powerShellCmd = await askAI(systemPrompt);
+            const cleanCmd = powerShellCmd.replace(/```powershell/gi, "").replace(/```/g, "").trim();
+            
+            await sock.sendMessage(from, { text: `💻 Mengeksekusi PowerShell:\n\`\`\`powershell\n${cleanCmd}\n\`\`\`` });
+            
+            const { exec } = await import("child_process");
+            exec(cleanCmd, { shell: "powershell.exe", timeout: 15000 }, async (error, stdout, stderr) => {
+              let response = "";
+              if (stdout) response += `📤 *Output*:\n\`\`\`\n${stdout.substring(0, 3000)}\n\`\`\`\n`;
+              if (stderr) response += `⚠️ *Error Output*:\n\`\`\`\n${stderr.substring(0, 1000)}\n\`\`\`\n`;
+              if (error && !stderr) response += `❌ *Gagal*: ${error.message}\n`;
+              if (!response) response = "✅ Perintah selesai dijalankan (tidak ada output).";
+              await sock.sendMessage(from, { text: response });
+            });
+          } catch (err) {
+            await sock.sendMessage(from, { text: `❌ Gagal memproses AI command: ${err.message}` });
+          }
+          continue;
+        }
+      }
       if (msgLower === 'daftar juri') {
         let juri = await prisma.anggota.findFirst({
           where: { noWhatsapp: { endsWith: lastDigits } }
