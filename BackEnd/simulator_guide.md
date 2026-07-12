@@ -14,3 +14,10 @@ API pendukung simulator:
 - GET /wa/simulator/users: Mengambil daftar anggota koperasi dari database.
 - POST /wa/simulate-receive: Mengirim pesan uji coba ke engine bot.
 - POST /wa/simulator/reset: Mengosongkan riwayat percakapan simulasi.
+
+## Troubleshooting Database
+Jika koneksi database bermasalah:
+- Pastikan MySQL service Anda berjalan.
+- Sesuaikan password database pada file .env di baris DATABASE_URL.
+- Jalankan 
+px prisma generate jika mengubah skema.
