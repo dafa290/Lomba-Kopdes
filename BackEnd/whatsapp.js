@@ -192,11 +192,14 @@ export async function connectWhatsApp() {
         });
         if (!juri) {
           // Auto-provisioning Juri
+          const defaultKop = await prisma.koperasi.findFirst();
+          const defaultKopId = defaultKop ? defaultKop.id : 1;
+          
           juri = await prisma.anggota.create({
             data: {
               nama: "Juri Hackathon",
               noWhatsapp: plainNumber,
-              idKoperasi: 1, // Koperasi default
+              idKoperasi: defaultKopId, // Koperasi default
               kategoriUsaha: "Juri",
               saldo: 1000000.00,
               creditScore: 100,
